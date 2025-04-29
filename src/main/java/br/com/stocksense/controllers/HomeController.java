@@ -10,8 +10,8 @@ public class HomeController {
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("home/index");
-		return mv;
-		
+		mv.addObject("msg", "Mensagem vinda diretamente do controller");		
+		return mv;		
 	}
 	
 	
