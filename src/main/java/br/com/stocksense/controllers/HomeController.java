@@ -9,12 +9,7 @@ public class HomeController {
 	@GetMapping("/")
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("home/index");
-		mv.addObject("msg", "Mensagem vinda diretamente do controller");		
+		mv.setViewName("home/index");			
 		return mv;		
-	}
-	
-	
-	
-	
+	}	
 }
