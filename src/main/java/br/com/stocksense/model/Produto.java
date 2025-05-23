@@ -61,108 +61,132 @@ public class Produto {
     
     @Column(name = "ativo")
     private Boolean ativo;
-	
-	
-	
-	
-	
-	
-	
 
-	private Integer getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	private void setId(Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	private Disponibilidade getDisponibilidade() {
+	public Disponibilidade getDisponibilidade() {
 		return disponibilidade;
 	}
 
-	private void setDisponibilidade(Disponibilidade disponibilidade) {
+	public void setDisponibilidade(Disponibilidade disponibilidade) {
 		this.disponibilidade = disponibilidade;
 	}
 
-	private String getImagens() {
+	public String getImagens() {
 		return imagens;
 	}
 
-	private void setImagens(String imagens) {
+	public void setImagens(String imagens) {
 		this.imagens = imagens;
 	}
 
-	private String getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
 
-	private void setCodigo(String codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 
-	private String getDescricao() {
+	public String getDescricao() {
 		return descricao;
 	}
 
-	private void setDescricao(String descricao) {
+	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 
-	private Integer getEstoqueAnterior() {
+	public Integer getEstoqueAnterior() {
 		return estoqueAnterior;
 	}
 
-	private void setEstoqueAnterior(Integer estoqueAnterior) {
+	public void setEstoqueAnterior(Integer estoqueAnterior) {
 		this.estoqueAnterior = estoqueAnterior;
 	}
 
-	private Integer getEntrada() {
+	public Integer getEntrada() {
 		return entrada;
 	}
 
-	private void setEntrada(Integer entrada) {
+	public void setEntrada(Integer entrada) {
 		this.entrada = entrada;
 	}
 
-	private Integer getSaida() {
+	public Integer getSaida() {
 		return saida;
 	}
 
-	private void setSaida(Integer saida) {
+	public void setSaida(Integer saida) {
 		this.saida = saida;
 	}
 
-	private Integer getSaldo() {
+	public Integer getSaldo() {
 		return saldo;
 	}
 
-	private void setSaldo(Integer saldo) {
+	public void setSaldo(Integer saldo) {
 		this.saldo = saldo;
 	}
 
-	private String getFornecedor() {
+	public String getFornecedor() {
 		return fornecedor;
 	}
 
-	private void setFornecedor(String fornecedor) {
+	public void setFornecedor(String fornecedor) {
 		this.fornecedor = fornecedor;
 	}
 
-	private BigDecimal getPrecoCusto() {
+	public BigDecimal getPrecoCusto() {
 		return precoCusto;
 	}
 
-	private void setPrecoCusto(BigDecimal precoCusto) {
+	public void setPrecoCusto(BigDecimal precoCusto) {
 		this.precoCusto = precoCusto;
 	}
 
-	private String getLocacao() {
-		return locacao;
+	public BigDecimal getPrecoVenda() {
+		return precoVenda;
 	}
 
-	private void setLocacao(String locacao) {
-		this.locacao = locacao;
+	public void setPrecoVenda(BigDecimal precoVenda) {
+		this.precoVenda = precoVenda;
 	}
 
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
+	public LocalDate getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(LocalDate dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	public LocalDateTime getUltimaAtualizacao() {
+		return ultimaAtualizacao;
+	}
+
+	public void setUltimaAtualizacao(LocalDateTime ultimaAtualizacao) {
+		this.ultimaAtualizacao = ultimaAtualizacao;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
 }
