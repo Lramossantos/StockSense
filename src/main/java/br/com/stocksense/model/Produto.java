@@ -15,6 +15,10 @@ public class Produto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	
+	@Column(name = "nome")
+	private String nome;
+	
+	@Column(name = "id")
 	private Integer id;
 	
 	@Column(name = "disponibilidade")
@@ -61,6 +65,14 @@ public class Produto {
     
     @Column(name = "ativo")
     private Boolean ativo;
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
 	public Integer getId() {
 		return id;
@@ -189,4 +201,10 @@ public class Produto {
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
+    
+    
+    
+    
+
+	
 }
