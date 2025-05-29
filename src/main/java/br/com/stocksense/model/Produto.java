@@ -3,6 +3,7 @@ package br.com.stocksense.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import br.com.stocksense.enums.Disponibilidade;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,67 +13,58 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Produto {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	
-	@Column(name = "nome")
-	private String nome;
-	
 	@Column(name = "id")
 	private Integer id;
-	
+
+	@Column(name = "nome")
+	private String nome;
+
 	@Column(name = "disponibilidade")
-    private Disponibilidade disponibilidade;
-    
-    @Column(name = "imagens")
-    private String imagens;
-    
-    @Column(name = "codigo")
-    private String codigo;
-    
-    @Column(name = "descricao")
-    private String descricao;
-    
-    @Column(name = "estoque_anterior")
-    private Integer estoqueAnterior;
-    
-    @Column(name = "entrada")
-    private Integer entrada;
-    
-    @Column(name = "saida")
-    private Integer saida;
-    
-    @Column(name = "saldo")
-    private Integer saldo;
-    
-    @Column(name = "fornecedor")
-    private String fornecedor;
-    
-    @Column(name = "preco_custo")
-    private BigDecimal precoCusto;
-    
-    @Column(name = "preco_venda")
-    private BigDecimal precoVenda;
-    
-    @Column(name = "categoria")
-    private String categoria;
-    
-    @Column(name = "data_cadastro")
-    private LocalDate dataCadastro;
-    
-    @Column(name = "ultima_atualizacao")
-    private LocalDateTime ultimaAtualizacao;
-    
-    @Column(name = "ativo")
-    private Boolean ativo;
+	private Disponibilidade disponibilidade;
 
-	public String getNome() {
-		return nome;
-	}
+	@Column(name = "imagens")
+	private String imagens;
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+	@Column(name = "codigo")
+	private String codigo;
+
+	@Column(name = "descricao")
+	private String descricao;
+
+	@Column(name = "entrada")
+	private Integer entrada;
+
+	@Column(name = "saida")
+	private Integer saida;
+
+	@Column(name = "saldo")
+	private Integer saldo;
+
+	@Column(name = "fornecedor")
+	private String fornecedor;
+
+	@Column(name = "preco_custo")
+	private BigDecimal precoCusto;
+
+	@Column(name = "preco_venda")
+	private BigDecimal precoVenda;
+
+	@Column(name = "categoria")
+	private String categoria;
+
+	@Column(name = "data_cadastro")
+	private LocalDate dataCadastro;
+
+	@Column(name = "ultima_atualizacao")
+	private LocalDateTime ultimaAtualizacao;
+
+	@Column(name = "ativo")
+	private Boolean ativo;
+
+	// Getters e Setters
 
 	public Integer getId() {
 		return id;
@@ -80,6 +72,14 @@ public class Produto {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public Disponibilidade getDisponibilidade() {
@@ -112,14 +112,6 @@ public class Produto {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public Integer getEstoqueAnterior() {
-		return estoqueAnterior;
-	}
-
-	public void setEstoqueAnterior(Integer estoqueAnterior) {
-		this.estoqueAnterior = estoqueAnterior;
 	}
 
 	public Integer getEntrada() {
@@ -201,10 +193,4 @@ public class Produto {
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
-    
-    
-    
-    
-
-	
 }

@@ -2,71 +2,148 @@
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="author" content="Leonardo Ramos" />
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@400;600&display=swap" rel="stylesheet">
-	<title>StockSense</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Leonardo Ramos" />
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@400;600&display=swap"
+	rel="stylesheet">
+<title>StockSense</title>
 </head>
 
 <body>
 	<div th:replace="fragmentos/fragmentos :: cabecalho"></div>
 
 	<div class="container">
-	<h4>+ Inserir Produto</h4>
-	<hr>
+		<h4>+ Inserir Produto</h4>
+		<hr>
 
-	<form method="post" action="/InsertProduto" th:object="${produto}" enctype="multipart/form-data">
+		<form method="post" action="/InsertProduto" th:object="${produto}"
+			enctype="multipart/form-data">
 
-		<div class="row">
-			<div class="col-md-6 form-group offset-md-3">
-				<label>Nome do Produto:</label>
-				<input class="form-control" placeholder="Ex: Coxim, Amortecedor, Câmbio..." th:field="*{nome}">
+			<div class="row">
+				<div class="col-md-6 form-group offset-md-3">
+					<label>Nome do Produto:</label> <input class="form-control"
+						placeholder="Ex: Coxim, Amortecedor, Câmbio..." th:field="*{nome}">
+				</div>
+
+				<div class="col-md-6 form-group offset-md-3">
+					<label>Disponibilidade:</label> <select class="form-control">
+						<option
+							th:each="Disponibilidade : ${T(br.com.stocksense.enums.Disponibilidade).values()}"
+							th:value="${Disponibilidade}" th:text="${Disponibilidade}"></option>
+					</select>
+				</div>
+
+				<div class="col-md-6 form-group offset-md-3">
+					<label>Imagem do Produto:</label>
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" id="imagemProduto"
+							name="imagemProduto" accept="image/*" required> <label
+							class="custom-file-label" for="imagemProduto">Escolher
+							imagem...</label>
+					</div>
+					<small class="form-text text-muted"> Tamanho mínimo
+						recomendado: 1200x1200px (mínimo permitido: 500x500px). </small>
+				</div>
+
+				<div class="col-md-6 form-group offset-md-4 mt-1">
+					<button type="submit"
+						class="btn btn-success btn-block btn-salvar-produto">Salvar
+						Produto</button>
+				</div>
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">
-				<label>Disponibilidade:</label>
-				<select class="form-control">
-					<option th:each="Disponibilidade : ${T(br.com.stocksense.enums.Disponibilidade).values()}"
-						th:value="${Disponibilidade}" th:text="${Disponibilidade}"></option>
+				<label>Código do Produto:</label> <input class="form-control"
+					placeholder="Ex: 123456..." th:field="*{codigo}">
+			</div>
+
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Descrição do Produto:</label> <input class="form-control"
+					placeholder="Ex: Este produto é feito de..."
+					th:field="*{descricao}">
+			</div>
+
+			<div class="row mb-3 justify-content-center">
+				<div class="col-md-3 form-group">
+					<label style="color: green;">Entrada:</label> <input
+						class="form-control"
+						placeholder="Ex: Digite a quantidade de entrada"
+						th:field="*{entrada}">
+				</div>
+
+				<div class="col-md-3 form-group ms-md-2">
+					<label style="color: red;">Saída:</label> <input
+						class="form-control" placeholder="Ex: Digite o número de saídas"
+						th:field="*{saida}">
+				</div>
+			</div>
+
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Nome do Fornecedor:</label> <input class="form-control"
+					placeholder="Ex: Fornecedor" th:field="*{fornecedor}">
+			</div>
+
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Valor de Custo:</label>
+				<div class="input-group">
+					<span class="input-group-text">R$</span> <input
+						class="form-control" placeholder="Ex: 100,00"
+						th:field="*{precoCusto}">
+				</div>
+			</div>
+
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Valor de Venda:</label>
+				<div class="input-group">
+					<span class="input-group-text">R$</span> <input
+						class="form-control" placeholder="Ex: 150,00"
+						th:field="*{precoVenda}">
+				</div>
+			</div>
+
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Categoria:</label> <input class="form-control"
+					placeholder="Ex: Categoria" th:field="*{Categoria}">
+			</div>
+
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Data de Cadastro:</label>
+				<p th:text="${produto.dataCadastro != null ? #temporals.format(produto.dataCadastro, 'dd/MM/yyyy') : 'Será definido automaticamente'}"></p>
+			</div>
+
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Última Atualização:</label>
+				<p th:text="${produto.ultimaAtualizacao != null ? #temporals.format(produto.ultimaAtualizacao, 'dd/MM/yyyy HH:mm') : 'Será definida automaticamente'}"></p>
+			</div>
+			
+			<div class="col-md-6 form-group offset-md-3">
+				<label>Status do Produto:</label> <select class="form-control"
+					th:field="*{ativo}">
+					<option th:value="true">Ativo</option>
+					<option th:value="false">Inativo</option>
 				</select>
 			</div>
-
-			<div class="col-md-6 form-group offset-md-3">
-				<label>Imagem do Produto:</label>
-				<div class="custom-file">
-					<input type="file" class="custom-file-input" id="imagemProduto" name="imagemProduto"
-						accept="image/*" required>
-					<label class="custom-file-label" for="imagemProduto">Escolher imagem...</label>
-				</div>
-				<small class="form-text text-muted">
-					Tamanho mínimo recomendado: 1200x1200px (mínimo permitido: 500x500px).
-				</small>
+			
+			<div class="row">
+				<button type="submit" class="btn btn-succes col-md-2 offset-md-4">SALVAR</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a class="btn btn-outline-danger col-md-2">VOLTAR</a>
 			</div>
-
-			<div class="col-md-6 form-group offset-md-4 mt-1">
-				<button type="submit" class="btn btn-success btn-block btn-salvar-produto">Salvar Produto</button>
-			</div>
-		</div>
-		
-		<div class="col-md-6 form-group offset-md-3">
-			<label>Código do Produto:</label>
-			<input class="form-control" placeholder="Ex: 123456..." th:field="*{codigo}">
-		</div>
-		
-		<div class="col-md-6 form-group offset-md-3">
-			<label>Descrição do Produto:</label>
-			<input class="form-control" placeholder="Ex: Este produto é feito de..." th:field="*{codigo}">
-		</div>
-
-	</form>
-</div>
-
+	</div>
 	
 	
+
+
+	<div th:replace="fragmentos/fragmentos :: rodape"></div>
+
+
+
 	<script src="js/main.js"></script>
 	<script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
 	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
