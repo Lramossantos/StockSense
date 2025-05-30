@@ -15,6 +15,14 @@ public enum Disponibilidade {
 		this.disponibilidade = disponibilidade;
 	}
 
+	public String getDisponibilidade() {
+		return disponibilidade;
+	}
+
+	public void setDisponibilidade(String disponibilidade) {
+		this.disponibilidade = disponibilidade;
+	}
+
 	
 
 }

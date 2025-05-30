@@ -22,8 +22,7 @@
 		<h4>+ Inserir Produto</h4>
 		<hr>
 
-		<form method="post" action="/InsertProduto" th:object="${produto}"
-			enctype="multipart/form-data">
+		<form method="post" action="/InsertProduto" th:object="${produto}" enctype="multipart/form-data">
 
 			<div class="row">
 				<div class="col-md-6 form-group offset-md-3">
@@ -32,84 +31,82 @@
 				</div>
 
 				<div class="col-md-6 form-group offset-md-3">
-					<label>Disponibilidade:</label> <select class="form-control">
-						<option
-							th:each="Disponibilidade : ${T(br.com.stocksense.enums.Disponibilidade).values()}"
-							th:value="${Disponibilidade}" th:text="${Disponibilidade}"></option>
-					</select>
-				</div>
+    				<label>Disponibilidade:</label>
+    				<select class="form-control" th:field="*{disponibilidade}" size="1">
+        				<option th:each="disponibilidade : ${T(br.com.stocksense.enums.Disponibilidade).values()}"
+                				th:value="${disponibilidade}"
+                				th:text="${disponibilidade}">
+        				</option>
+    				</select>
+				</div>				
 
 				<div class="col-md-6 form-group offset-md-3">
 					<label>Imagem do Produto:</label>
 					<div class="custom-file">
 						<input type="file" class="custom-file-input" id="imagemProduto"
-							name="imagemProduto" accept="image/*" required> <label
-							class="custom-file-label" for="imagemProduto">Escolher
-							imagem...</label>
+							name="imagemProduto" accept="image/*" required> 
+							<label class="custom-file-label" for="imagemProduto">Escolher imagem...</label>
 					</div>
-					<small class="form-text text-muted"> Tamanho mínimo
-						recomendado: 1200x1200px (mínimo permitido: 500x500px). </small>
+					<small class="form-text text-muted"> Tamanho mínimo	recomendado: 1200x1200px (mínimo permitido: 500x500px). </small>
 				</div>
 
 				<div class="col-md-6 form-group offset-md-4 mt-1">
-					<button type="submit"
-						class="btn btn-success btn-block btn-salvar-produto">Salvar
-						Produto</button>
+					<button type="submit" class="btn btn-success btn-block btn-salvar-produto">Salvar Produto</button>
 				</div>
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">
-				<label>Código do Produto:</label> <input class="form-control"
-					placeholder="Ex: 123456..." th:field="*{codigo}">
+				<label>Código do Produto:</label> 
+				<input class="form-control"	placeholder="Ex: 123456..." th:field="*{codigo}">
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">
-				<label>Descrição do Produto:</label> <input class="form-control"
-					placeholder="Ex: Este produto é feito de..."
-					th:field="*{descricao}">
+				<label>Descrição do Produto:</label> 
+				<input class="form-control"	placeholder="Ex: Este produto é feito de..." th:field="*{descricao}">
 			</div>
 
 			<div class="row mb-3 justify-content-center">
 				<div class="col-md-3 form-group">
-					<label style="color: green;">Entrada:</label> <input
-						class="form-control"
-						placeholder="Ex: Digite a quantidade de entrada"
-						th:field="*{entrada}">
+					<label style="color: green;">Entrada:</label> 
+					<input class="form-control"	placeholder="Ex: Digite a quantidade de entrada" th:field="*{entrada}">
 				</div>
 
 				<div class="col-md-3 form-group ms-md-2">
-					<label style="color: red;">Saída:</label> <input
-						class="form-control" placeholder="Ex: Digite o número de saídas"
-						th:field="*{saida}">
+					<label style="color: red;">Saída:</label> 
+					<input class="form-control" placeholder="Ex: Digite o número de saídas"	th:field="*{saida}">
 				</div>
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">
-				<label>Nome do Fornecedor:</label> <input class="form-control"
-					placeholder="Ex: Fornecedor" th:field="*{fornecedor}">
+				<label>Nome do Fornecedor:</label> 
+				<input class="form-control"	placeholder="Ex: Fornecedor" th:field="*{fornecedor}">
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">
 				<label>Valor de Custo:</label>
 				<div class="input-group">
-					<span class="input-group-text">R$</span> <input
-						class="form-control" placeholder="Ex: 100,00"
-						th:field="*{precoCusto}">
+					<span class="input-group-text">R$</span> 
+					<input class="form-control" placeholder="Ex: 100,00" th:field="*{precoCusto}">
 				</div>
+				<small class="form-text text-muted"> Colocar sem ("$" sifrão) e ultilizar ("." ponto). </small>				
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">
 				<label>Valor de Venda:</label>
-				<div class="input-group">
-					<span class="input-group-text">R$</span> <input
-						class="form-control" placeholder="Ex: 150,00"
-						th:field="*{precoVenda}">
+				<div class="input-group"> <span class="input-group-text">R$</span> 
+					<input class="form-control" placeholder="Ex: 150,00" th:field="*{precoVenda}">
 				</div>
+				<small class="form-text text-muted"> Colocar sem ("$" sifrão) e ultilizar ("." ponto). </small>
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">
-				<label>Categoria:</label> <input class="form-control"
-					placeholder="Ex: Categoria" th:field="*{Categoria}">
+    			<label>Empresa:</label>
+    			<select class="form-control" th:field="*{categoria}" size="1">
+        			<option th:each="categoria : ${T(br.com.stocksense.enums.Categoria).values()}"
+                			th:value="${categoria.name()}"
+                			th:text="${categoria.categoria}">
+        			</option>
+    			</select>
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">

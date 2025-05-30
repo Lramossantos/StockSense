@@ -4,67 +4,71 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import br.com.stocksense.enums.Categoria;
 import br.com.stocksense.enums.Disponibilidade;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "produto")
 public class Produto {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
 
-	@Column(name = "nome")
-	private String nome;
+    @Column(name = "nome", unique = true)
+    private String nome;
 
-	@Column(name = "disponibilidade")
-	private Disponibilidade disponibilidade;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "disponibilidade")
+    private Disponibilidade disponibilidade;
 
-	@Column(name = "imagens")
-	private String imagens;
+    @Column(name = "imagens")
+    private String imagens;
 
-	@Column(name = "codigo")
-	private String codigo;
+    @Column(name = "codigo", unique = true)
+    private String codigo;
 
-	@Column(name = "descricao")
-	private String descricao;
+    @Column(name = "descricao")
+    private String descricao;
 
-	@Column(name = "entrada")
-	private Integer entrada;
+    @Column(name = "entrada")
+    private Integer entrada;
 
-	@Column(name = "saida")
-	private Integer saida;
+    @Column(name = "saida")
+    private Integer saida;
 
-	@Column(name = "saldo")
-	private Integer saldo;
+    @Column(name = "saldo")
+    private Integer saldo;
 
-	@Column(name = "fornecedor")
-	private String fornecedor;
+    @Column(name = "fornecedor")
+    private String fornecedor;
 
-	@Column(name = "preco_custo")
-	private BigDecimal precoCusto;
+    @Column(name = "preco_custo")
+    private BigDecimal precoCusto;
 
-	@Column(name = "preco_venda")
-	private BigDecimal precoVenda;
+    @Column(name = "preco_venda")
+    private BigDecimal precoVenda;
+    
+    @Column(name = "categoria")
+    private Categoria categoria;
 
-	@Column(name = "categoria")
-	private String categoria;
+    @Column(name = "data_cadastro")
+    private LocalDate dataCadastro;
 
-	@Column(name = "data_cadastro")
-	private LocalDate dataCadastro;
+    @Column(name = "ultima_atualizacao")
+    private LocalDateTime ultimaAtualizacao;
 
-	@Column(name = "ultima_atualizacao")
-	private LocalDateTime ultimaAtualizacao;
-
-	@Column(name = "ativo")
-	private Boolean ativo;
-
-	// Getters e Setters
+    @Column(name = "ativo")
+    private Boolean ativo;
 
 	public Integer getId() {
 		return id;
@@ -160,13 +164,13 @@ public class Produto {
 
 	public void setPrecoVenda(BigDecimal precoVenda) {
 		this.precoVenda = precoVenda;
-	}
+	}	
 
-	public String getCategoria() {
+	public Categoria getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(String categoria) {
+	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
 
@@ -193,4 +197,6 @@ public class Produto {
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
+
+    
 }
