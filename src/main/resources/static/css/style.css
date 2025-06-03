@@ -24,17 +24,16 @@ a {
 	box-shadow: 0px 0px 5px black;
 }
 
-
-
-
 .neo-section {
 	min-height: 1000px;
 	background-size: cover !important;
 	background-position: center;
 	background-repeat: no-repeat;
+	background-color: #F3F4F6;
 	width: 100%;
 	padding: 30px;
 	position: relative;
+	width: 100%;
 }
 
 .neo-section>.neo-container {
@@ -46,6 +45,8 @@ a {
 	max-width: 1280px;
 	padding: 2% 2%;
 	margin: 0 auto;
+	background-color: white;
+	border-radius: 15px;
 	margin-top: 30px
 }
 
@@ -135,13 +136,18 @@ a {
 }
 
 .container {
+	padding: 25px 0px;
+	border-radius: 15px;
+	background-color : white;
 	margin-top: 50px;
 	margin-bottom: 100px;
+	margin-top: 50px;
+	background-color: white;
 }
 
 .btn-salvar-produto {
-  padding: 3px 1px 3px 1px !important;
-  border-bottom: 4px !important;   
+	padding: 3px 1px 3px 1px !important;
+	border-bottom: 4px !important;
 }
 
 .btn-salvar-produto:hover {

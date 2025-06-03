@@ -3,9 +3,9 @@ package br.com.stocksense.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import br.com.stocksense.enums.Categoria;
 import br.com.stocksense.enums.Disponibilidade;
+import br.com.stocksense.enums.Empresa;
+import br.com.stocksense.enums.Fabricante;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 public class Produto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
@@ -58,8 +58,8 @@ public class Produto {
     @Column(name = "preco_venda")
     private BigDecimal precoVenda;
     
-    @Column(name = "categoria")
-    private Categoria categoria;
+    @Column(name = "empresa")
+    private Empresa empresa;
 
     @Column(name = "data_cadastro")
     private LocalDate dataCadastro;
@@ -69,6 +69,9 @@ public class Produto {
 
     @Column(name = "ativo")
     private Boolean ativo;
+    
+    @Column(name = "fabricante")
+    private Fabricante fabricante;
 
 	public Integer getId() {
 		return id;
@@ -164,14 +167,14 @@ public class Produto {
 
 	public void setPrecoVenda(BigDecimal precoVenda) {
 		this.precoVenda = precoVenda;
-	}	
-
-	public Categoria getCategoria() {
-		return categoria;
 	}
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	public LocalDate getDataCadastro() {
@@ -198,5 +201,14 @@ public class Produto {
 		this.ativo = ativo;
 	}
 
+	public Fabricante getFabricante() {
+		return fabricante;
+	}
+
+	public void setFabricante(Fabricante fabricante) {
+		this.fabricante = fabricante;
+	}
     
-}
+    
+
+	}

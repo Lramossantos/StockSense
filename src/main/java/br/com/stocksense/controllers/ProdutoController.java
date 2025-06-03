@@ -14,53 +14,58 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import br.com.stocksense.DAO.ProdutoDAO;
 import br.com.stocksense.model.Produto;
-import br.com.stocksense.repository.ProdutoRepository;
 
 @Controller
 public class ProdutoController {
 
-	@Autowired
-	private ProdutoRepository produtoRepository;
+    @Autowired
+    private ProdutoDAO produtoRepository;
 
-	@GetMapping("/inserirProduto")
-	public String inserirProdutoForm(@ModelAttribute Produto produto) {
-		return "produto/inserirProduto";
-	}
+    @GetMapping("/inserirProduto")
+    public String inserirProdutoForm(@ModelAttribute Produto produto) {
+        return "produto/inserirProduto";
+    }
 
-	@PostMapping("/InsertProduto")
-	public String insertProduto(@ModelAttribute Produto produto,
-			@RequestParam("imagemProduto") MultipartFile imagemFile) {
+    @PostMapping("/InsertProduto")
+    public ModelAndView insertProduto(@ModelAttribute Produto produto,
+            @RequestParam(value = "imagemProduto", required = false) MultipartFile imagemFile) {
 
-		// Definir dataCadastro e ultimaAtualizacao
-		if (produto.getId() == null) {
-			produto.setDataCadastro(LocalDate.now());
-			produto.setAtivo(true); // se quiser definir ativo padrão
-		}
-		produto.setUltimaAtualizacao(LocalDateTime.now());
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/Produto/listProduto");
 
-		// Salvar imagem
-		if (!imagemFile.isEmpty()) {
-			try {
-				String nomeArquivo = imagemFile.getOriginalFilename();
-				String diretorioDestino = "src/main/resources/static/img/produtos/";
-				Path caminhoArquivo = Paths.get(diretorioDestino + nomeArquivo);
+        // Definir dataCadastro e ultimaAtualizacao
+        if (produto.getId() == null) {
+            produto.setDataCadastro(LocalDate.now());
+            produto.setAtivo(true);
+        }
+        produto.setUltimaAtualizacao(LocalDateTime.now());
 
-				Files.createDirectories(caminhoArquivo.getParent());
-				Files.write(caminhoArquivo, imagemFile.getBytes());
+        // Salvar imagem (se fornecida)
+        if (imagemFile != null && !imagemFile.isEmpty()) {
+            try {
+                String nomeArquivo = imagemFile.getOriginalFilename();
+                String diretorioDestino = "src/main/resources/static/img/produtos/";
+                Path caminhoArquivo = Paths.get(diretorioDestino + nomeArquivo);
 
-				produto.setImagens("/img/produtos/" + nomeArquivo);
+                Files.createDirectories(caminhoArquivo.getParent());
+                Files.write(caminhoArquivo, imagemFile.getBytes());
 
-			} catch (IOException e) {
-				e.printStackTrace();
-				return "redirect:/inserirProduto?erroImagem";
-			}
-		}
+                produto.setImagens("/img/produtos/" + nomeArquivo);
 
-		// Salvar produto no banco
-		produtoRepository.save(produto);
+            } catch (IOException e) {
+                e.printStackTrace();
+                mv.addObject("erro", "Erro ao salvar imagem");
+                return mv;
+            }
+        }
 
-		return "redirect:/produtos";
-	}
+        // Salvar produto no banco
+        produtoRepository.save(produto);
+
+        return mv;
+    }
 }
