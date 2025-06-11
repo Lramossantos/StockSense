@@ -1,20 +1,84 @@
 <!DOCTYPE html>
 <html>
-	<head>
-	    <meta charset="UTF-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <link rel="stylesheet" href="css/style.css">
-	    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
-	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@400;600&display=swap" rel="stylesheet">
-	    <title>StockSense</title>
-	</head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@400;600&display=swap"
+	rel="stylesheet">
+<title>StockSense</title>
+</head>
 <body>
-	
-	
-	
-	
-    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	<div th:replace="fragmentos/fragmentos :: cabecalho"></div>
+
+	<div class="container table-responsive">
+		<h4>Últimos produtos Adicionados</h4>
+		<hr>
+
+		<table class="table table-bordered table-hover table-striped">
+			<thead>
+				<th scope="col">Id</th>
+				<th scope="col">Imagem</th>
+				<th scope="col">Disponibilidade</th>
+				<th scope="col">Código</th>
+				<th scope="col">Descrição</th>
+				<th scope="col">Entrada</th>
+				<th scope="col">Saída</th>
+				<th scope="col">Saldo</th>
+				<th scope="col">Fornecedor</th>
+				<th scope="col">Custo</th>
+				<th scope="col">Venda</th>
+				<th scope="col">Fabricante</th>
+				<th scope="col">Empresa</th>
+				<th scope="col">Status</th>
+				<th scope="col">Alteração</th>
+				<th scope="col">Editar</th>
+			</thead>
+			<tbody>
+				<tr scope="row" th:each="produto : ${produtosList}">
+					<td th:text="${produto.id}"></td>
+					<td>
+    					<img th:if="${produto.imagens}" th:src="@{${produto.imagens}}" style="max-width: 100px; max-height: 100px;" alt="Imagem do produto">
+    					<span th:unless="${produto.imagens}">Sem imagem</span>
+					</td>
+					<td th:text="${produto.disponibilidade}"></td>
+					<td th:text="${produto.codigo}"></td>
+					<td th:text="${produto.descricao}"></td>
+					<td th:text="${produto.entrada}"></td>
+					<td th:text="${produto.saida}"></td>
+					<td th:text="${produto.saldo}"></td>
+					<td th:text="${produto.fornecedor}"></td>
+					<td th:text="${produto.precoCusto}"></td>
+					<td th:text="${produto.precoVenda}"></td>
+					<td th:text="${produto.fabricante}"></td>					
+					<td th:text="${produto.empresa}"></td>
+					<td th:text="${produto.ativo}"></td>
+					<td th:text="${produto.ultimaAtualizacao}"></td>
+					
+					<td>
+    					<div class="d-flex">
+       					 <a class="btn btn-primary btn-alterar me-2" th:href="@{alterar/{id}(id=${produto.id})}">
+      					      <i class="fas fa-edit"></i> Editar
+      					  </a>
+     					  &nbsp;&nbsp;&nbsp;
+      					  <a class="btn btn-danger btn-excluir" th:href="@{excluir/{id}(id=${produto.id})}">
+      					      <i class="fas fa-times"></i> Excluir
+      					  </a>
+    					</div>
+					</td>
+				</tr>
+			</tbody>
+
+		</table>
+	</div>
+
+
+
+	<script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
