@@ -1,5 +1,8 @@
 package br.com.stocksense.controllers;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,16 +10,14 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import java.util.Optional;  // Adicione esta linha no topo do arquivo
+import java.util.Optional;
+import javax.imageio.ImageIO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -30,53 +31,37 @@ public class ProdutoController {
     @Autowired
     private ProdutoDAO produtoRepository;
 
+    // Formulário de inserção
     @GetMapping("/inserirProduto")
-    public String inserirProdutoForm(@ModelAttribute Produto produto, Model model) {
-        model.addAttribute("produto", produto == null ? new Produto() : produto);
+    public String inserirProdutoForm(Model model) {
+        model.addAttribute("produto", new Produto());
         return "produto/inserirProduto";
     }
 
+    // Processar inserção
     @PostMapping("/InsertProduto")
-    public ModelAndView insertProduto(@ModelAttribute Produto produto,
-            @RequestParam(value = "imagemProduto", required = false) MultipartFile imagemFile,
-            RedirectAttributes redirectAttributes) {
+    public String insertProduto(@ModelAttribute Produto produto,
+                              @RequestParam(value = "imagemProduto", required = false) MultipartFile imagemFile,
+                              RedirectAttributes redirectAttributes) {
 
-        ModelAndView mv = new ModelAndView();
-
-        // Verificar se o código já existe (CORREÇÃO: usando existsByCodigo em vez de existsById)
+        // Validação de código único
         if (produtoRepository.existsByCodigo(produto.getCodigo())) {
             redirectAttributes.addFlashAttribute("erro", "Já existe um produto com este código!");
-            mv.setViewName("redirect:/inserirProduto");
-            return mv;
+            return "redirect:/inserirProduto";
         }
 
         // Configuração de datas
-        if (produto.getId() == null) {
-            produto.setDataCadastro(LocalDate.now());
-            produto.setAtivo(true);
-        }
+        produto.setDataCadastro(LocalDate.now());
         produto.setUltimaAtualizacao(LocalDateTime.now());
+        produto.setAtivo(true);
 
-        // Processamento de imagem
+        // Processamento de imagem como ícone
         if (imagemFile != null && !imagemFile.isEmpty()) {
             try {
-                String extensao = imagemFile.getOriginalFilename()
-                    .substring(imagemFile.getOriginalFilename().lastIndexOf("."));
-                String nomeArquivo = UUID.randomUUID().toString() + extensao;
-                
-                String diretorioDestino = "src/main/resources/static/img/produtos/";
-                Path caminhoArquivo = Paths.get(diretorioDestino + nomeArquivo);
-
-                Files.createDirectories(caminhoArquivo.getParent());
-                Files.write(caminhoArquivo, imagemFile.getBytes());
-
-                produto.setImagens("/img/produtos/" + nomeArquivo);
-
+                processarImagemComoIcone(imagemFile, produto);
             } catch (IOException e) {
-                e.printStackTrace();
-                redirectAttributes.addFlashAttribute("erro", "Erro ao salvar imagem");
-                mv.setViewName("redirect:/inserirProduto");
-                return mv;
+                redirectAttributes.addFlashAttribute("erro", "Erro ao processar imagem: " + e.getMessage());
+                return "redirect:/inserirProduto";
             }
         }
 
@@ -85,103 +70,103 @@ public class ProdutoController {
             redirectAttributes.addFlashAttribute("sucesso", "Produto cadastrado com sucesso!");
         } catch (DataIntegrityViolationException e) {
             redirectAttributes.addFlashAttribute("erro", "Erro ao cadastrar produto. Verifique os dados.");
-            mv.setViewName("redirect:/inserirProduto");
-            return mv;
+            return "redirect:/inserirProduto";
         }
 
-        mv.setViewName("redirect:/produtos-adicionados");
-        return mv;
+        return "redirect:/produtos-adicionados";
     }
 
-    @GetMapping("produtos-adicionados")
-    public ModelAndView listagemProdutos() {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("Produto/listProduto");
-        mv.addObject("produtosList", produtoRepository.findAll());
-        return mv;
+    // Método para processar imagem como ícone
+    private void processarImagemComoIcone(MultipartFile imagemFile, Produto produto) throws IOException {
+        String nomeArquivo = UUID.randomUUID().toString() + ".png";
+        String diretorioDestino = "src/main/resources/static/img/icons/";
+        Path caminhoIcone = Paths.get(diretorioDestino + nomeArquivo);
+
+        Files.createDirectories(caminhoIcone.getParent());
+        
+        BufferedImage imagemOriginal = ImageIO.read(imagemFile.getInputStream());
+        BufferedImage imagemRedimensionada = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+        
+        Graphics2D g = imagemRedimensionada.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.drawImage(imagemOriginal, 0, 0, 256, 256, null);
+        g.dispose();
+        
+        ImageIO.write(imagemRedimensionada, "png", caminhoIcone.toFile());
+        
+        produto.setImagens("/img/icons/" + nomeArquivo);
     }
 
+    // Listagem de produtos
+    @GetMapping("/produtos-adicionados")
+    public String listagemProdutos(Model model) {
+        model.addAttribute("produtosList", produtoRepository.findAll());
+        return "produto/listProduto";
+    }
+
+    // Formulário de alteração
     @GetMapping("/alterar/{id}")
-    public ModelAndView alterar(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+    public ModelAndView alterar(@PathVariable("id") Integer id) {
         ModelAndView mv = new ModelAndView();
-        
-        try {
-            Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
-            mv.setViewName("Produto/alterar");
-            mv.addObject("produto", produto);
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("erro", e.getMessage());
-            mv.setViewName("redirect:/produtos-adicionados");
-        }
-        
+        mv.setViewName("Produto/alterar");
+        Produto produto = produtoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Produto não encontrado com id: " + id));
+        mv.addObject("produto", produto);
         return mv;
     }
 
     @PostMapping("/alterar")
     public ModelAndView alterar(@ModelAttribute Produto produto,
-            @RequestParam(value = "imagemProduto", required = false) MultipartFile imagemFile,
-            RedirectAttributes redirectAttributes) {
-        
+                              @RequestParam(value = "imagemProduto", required = false) MultipartFile imagemFile,
+                              RedirectAttributes redirectAttributes) {
         ModelAndView mv = new ModelAndView();
 
-        // Verificar se outro produto já tem esse código (CORREÇÃO: usando Optional)
-        Optional<Produto> produtoExistente = produtoRepository.findByCodigo(produto.getCodigo());
-        if (produtoExistente.isPresent() && !produtoExistente.get().getId().equals(produto.getId())) {
-            redirectAttributes.addFlashAttribute("erro", "Já existe outro produto com este código!");
-            mv.setViewName("redirect:/alterar/" + produto.getId());
+        // Busca o produto existente no banco
+        Optional<Produto> produtoExistenteOptional = produtoRepository.findById(produto.getId());
+
+        if (!produtoExistenteOptional.isPresent()) {
+            redirectAttributes.addFlashAttribute("erro", "Produto não encontrado!");
+            mv.setViewName("redirect:/produtos-adicionados");
             return mv;
         }
 
-        // Atualizar data de modificação
-        produto.setUltimaAtualizacao(LocalDateTime.now());
+        Produto produtoExistente = produtoExistenteOptional.get();
 
-        // Processamento de imagem (se fornecida)
+        // Processamento do ícone
         if (imagemFile != null && !imagemFile.isEmpty()) {
             try {
-                // Remove imagem antiga se existir
-                if (produto.getImagens() != null && !produto.getImagens().isEmpty()) {
-                    Path caminhoAntigo = Paths.get("src/main/resources/static" + produto.getImagens());
-                    Files.deleteIfExists(caminhoAntigo);
-                }
-
-                // Gera nome único para o novo arquivo
-                String extensao = imagemFile.getOriginalFilename()
-                    .substring(imagemFile.getOriginalFilename().lastIndexOf("."));
-                String nomeArquivo = UUID.randomUUID().toString() + extensao;
-                
-                String diretorioDestino = "src/main/resources/static/img/produtos/";
-                Path caminhoArquivo = Paths.get(diretorioDestino + nomeArquivo);
-
-                Files.createDirectories(caminhoArquivo.getParent());
-                Files.write(caminhoArquivo, imagemFile.getBytes());
-
-                produto.setImagens("/img/produtos/" + nomeArquivo);
-
+                processarImagemComoIcone(imagemFile, produto);
             } catch (IOException e) {
-                e.printStackTrace();
-                redirectAttributes.addFlashAttribute("erro", "Erro ao atualizar imagem");
-                mv.setViewName("redirect:/alterar/" + produto.getId());
+                redirectAttributes.addFlashAttribute("erro", "Erro ao processar imagem: " + e.getMessage());
+                mv.setViewName("redirect:/produtos-adicionados");
                 return mv;
             }
+        } else {
+            // Mantém o ícone antigo se nenhum novo foi enviado
+            produto.setImagens(produtoExistente.getImagens());
         }
 
-        try {
-            produtoRepository.save(produto);
-            redirectAttributes.addFlashAttribute("sucesso", "Produto atualizado com sucesso!");
-        } catch (DataIntegrityViolationException e) {
-            redirectAttributes.addFlashAttribute("erro", "Erro ao atualizar produto. Verifique os dados.");
-            mv.setViewName("redirect:/alterar/" + produto.getId());
-            return mv;
-        }
+        // Preserva a data de cadastro e atualiza a última atualização
+        produto.setDataCadastro(produtoExistente.getDataCadastro());
+        produto.setUltimaAtualizacao(LocalDateTime.now());
 
+        // Salva alterações
+        produtoRepository.save(produto);
+
+        redirectAttributes.addFlashAttribute("sucesso", "Produto atualizado com sucesso!");
         mv.setViewName("redirect:/produtos-adicionados");
         return mv;
     }
-    
-    @GetMapping ("/excluir/{id}")
-    public String excluirProduto(@PathVariable("id") Integer id) {
-    	produtoRepository.deleteById(id);
-    	return "redirect:/produtos-adicionados";
+
+    // Excluir produto
+    @GetMapping("/excluir/{id}")
+    public String excluirProduto(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            produtoRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("sucesso", "Produto excluído com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erro", "Erro ao excluir produto");
+        }
+        return "redirect:/produtos-adicionados";
     }
 }

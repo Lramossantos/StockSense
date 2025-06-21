@@ -96,4 +96,36 @@ $(document).ready(function() {
         }
         return true;
     });
+	
+	$(document).ready(function() {
+	    $('.btn-excluir').click(function(e) {
+	        if (!confirm('Tem certeza que deseja excluir este produto?')) {
+	            e.preventDefault();
+	        }
+	    });
+	});
+	
+	document.getElementById('imagemProduto').addEventListener('change', function(e) {
+	    const file = e.target.files[0];
+	    const label = document.getElementById('imagemLabel');
+	    const feedback = document.getElementById('imagemFeedback');
+	    
+	    if (file) {
+	        label.textContent = file.name;
+	        
+	        // Validação simples do tipo de arquivo
+	        const validExtensions = ['image/x-icon', 'image/vnd.microsoft.icon', 'image/*'];
+	        const fileType = file.type;
+	        
+	        if (!validExtensions.includes(fileType) && !file.name.endsWith('.ico')) {
+	            feedback.textContent = 'Por favor, selecione um arquivo .ico ou imagem válida';
+	            feedback.classList.remove('d-none');
+	            feedback.classList.add('text-danger');
+	            e.target.value = ''; // Limpa o input
+	            label.textContent = 'Selecione um ícone (.ico) ou imagem...';
+	        } else {
+	            feedback.classList.add('d-none');
+	        }
+	    }
+	});
 });

@@ -12,7 +12,7 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@400;600&display=swap"
 	rel="stylesheet">
-<title>+ Alterar Produto</title>
+<title>StockSense</title>
 </head>
 
 <body>
@@ -23,8 +23,9 @@
 		<h4>+ Alterar Produto</h4>
 		<hr>
 
-		<form method="post" action="/InsertProduto" th:object="${produto}" enctype="multipart/form-data">
-
+		<form method="post" action="/alterar" th:object="${produto}" enctype="multipart/form-data">
+			<input type="hidden" th:field="*{id}" />					
+		
 			<div class="row">
 				<div class="col-md-6 form-group offset-md-3">
 					<label>Nome do Produto*</label> <input class="form-control"

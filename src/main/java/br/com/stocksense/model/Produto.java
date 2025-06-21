@@ -24,7 +24,7 @@ public class Produto {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "nome", unique = true)
+    @Column(name = "nome")
     private String nome;
 
     @Enumerated(EnumType.STRING)
@@ -34,7 +34,7 @@ public class Produto {
     @Column(name = "imagens")
     private String imagens;
 
-    @Column(name = "codigo", unique = true)
+    @Column(name = "codigo")
     private String codigo;
 
     @Column(name = "descricao")
@@ -46,7 +46,7 @@ public class Produto {
     @Column(name = "saida")
     private Integer saida;
 
-    @Column(name = "saldo")
+    @Column(insertable = false, updatable = false)
     private Integer saldo;
 
     @Column(name = "fornecedor")
@@ -209,6 +209,40 @@ public class Produto {
 		this.fabricante = fabricante;
 	}
     
-    
+	// Adiciona quantidade de entrada e atualiza saldo
+	public void registrarEntrada(int quantidade) {
+	    if (quantidade <= 0) {
+	        throw new IllegalArgumentException("A quantidade de entrada deve ser positiva.");
+	    }
+	    if (this.entrada == null) {
+	        this.entrada = 0;
+	    }
+	    if (this.saldo == null) {
+	        this.saldo = 0;
+	    }
+	    this.entrada += quantidade;
+	    this.saldo += quantidade;
+	    this.ultimaAtualizacao = LocalDateTime.now();
+	}
+
+	// Registra saída e atualiza saldo, com validação de saldo suficiente
+	public void registrarSaida(int quantidade) {
+	    if (quantidade <= 0) {
+	        throw new IllegalArgumentException("A quantidade de saída deve ser positiva.");
+	    }
+	    if (this.saldo == null) {
+	        this.saldo = 0;
+	    }
+	    if (quantidade > this.saldo) {
+	        throw new IllegalArgumentException("Estoque insuficiente para a saída solicitada.");
+	    }
+	    if (this.saida == null) {
+	        this.saida = 0;
+	    }
+	    this.saida += quantidade;
+	    this.saldo -= quantidade;
+	    this.ultimaAtualizacao = LocalDateTime.now();
+	}
+
 
 	}
