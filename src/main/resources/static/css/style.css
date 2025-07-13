@@ -1,5 +1,14 @@
 @charset "UTF-8";
 
+:root {
+	--cor-primaria: #212326;
+	--cor-secundaria: #373C40;
+	--cor-hover: #888C89;
+	--cor-texto: #272727;
+	--borda-radius: 15px;
+	--sombra: 0px 0px 5px #373C40;
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -11,6 +20,10 @@ nav {
 	color: white !important;
 	box-shadow: 0px 0px 5px #373C40;
 	text-transform: uppercase;
+}
+
+.nav-item:hover {
+	transition: text-shadow 0.2s ease;
 }
 
 a {
@@ -83,6 +96,7 @@ a {
 }
 
 .btn {
+	transition: all 0.3s ease;
 	font-weight: bold !important;
 	width: 280px !important;
 	color: #fff !important;
@@ -138,7 +152,7 @@ a {
 .container {
 	padding: 25px 0px;
 	border-radius: 15px;
-	background-color : white;
+	background-color: white;
 	margin-top: 50px;
 	margin-bottom: 100px;
 	margin-right: 300px;
@@ -157,46 +171,38 @@ a {
 
 /* Estilos para o upload de imagem */
 .custom-file-label::after {
-    content: "Procurar";
-    background-color: #e9ecef;
-    border-left: 1px solid #ced4da;
+	content: "Procurar";
+	background-color: #e9ecef;
+	border-left: 1px solid #ced4da;
 }
 
 .custom-file-label.selected {
-    color: #495057;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+	color: #495057;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .valid-feedback {
-    color: #28a745;
-    display: block;
+	color: #28a745;
+	display: block;
 }
 
 .invalid-feedback {
-    color: #dc3545;
-    display: block;
+	color: #dc3545;
+	display: block;
 }
 
 .feedback-message {
-    margin-top: 5px;
-    font-size: 0.875em;
+	margin-top: 5px;
+	font-size: 0.875em;
 }
 
 .btn-alterar {
 	font-weight: bold !important;
 	width: 110px !important;
 	color: #fff !important;
-	background-color: #000040!important;	
-	box-shadow: 0px 0px 5px #373C40;
-}
-
-.btn-alterar:hover {
-	font-weight: bold !important;
-	width: 110px !important;
-	color: #fff !important;
-	background-color: #808080!important;	
+	background-color: #000040 !important;
 	box-shadow: 0px 0px 5px #373C40;
 }
 
@@ -204,8 +210,15 @@ a {
 	font-weight: bold !important;
 	width: 110px !important;
 	color: #fff !important;
-	background-color: #800000!important;	
-	padding: 15px !important;
+	background-color: #800000!important;
+	box-shadow: 0px 0px 5px #373C40;
+}
+
+.btn-alterar:hover {
+	font-weight: bold !important;
+	width: 110px !important;
+	color: #fff !important;
+	background-color: #808080 !important;
 	box-shadow: 0px 0px 5px #373C40;
 }
 
@@ -213,7 +226,7 @@ a {
 	font-weight: bold !important;
 	width: 110px !important;
 	color: #fff !important;
-	background-color: #808080!important;	
+	background-color: #808080 !important;
 	padding: 15px !important;
 	box-shadow: 0px 0px 5px #373C40;
 }
@@ -222,5 +235,16 @@ a {
 	margin-bottom: 270px;
 }
 
+.moeda::before {
+	content: "R$ ";
+	
+}
 
+td {	
+	text-align: center;
+	
+}
 
+#prodDesc {
+	padding-right: 900px;
+}

@@ -14,64 +14,76 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "produto")
 public class Produto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Integer id;
 
-    @Column(name = "nome")
-    private String nome;
+	@Size(min = 5, max = 35, message = "O nome deve conter entre 5 e 35 caracteres.")
+	@NotBlank(message = "O nome não pode ser vazio.")
+	@Column(name = "nome")
+	private String nome;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "disponibilidade")
-    private Disponibilidade disponibilidade;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "disponibilidade")
+	@NotNull(message = "Selecione uma disponibilidade")
+	private Disponibilidade disponibilidade;
 
-    @Column(name = "imagens")
-    private String imagens;
+	@Column(name = "imagens")	
+	private String imagens;
 
-    @Column(name = "codigo")
-    private String codigo;
+	@Column(name = "codigo")
+	@NotNull(message = "O campo Código não pode ser vazio.")
+	private String codigo;
 
-    @Column(name = "descricao")
-    private String descricao;
+	@Column(name = "descricao")
+	@NotBlank(message = "O campo Descrição não pode ser vazio.")
+	private String descricao;
 
-    @Column(name = "entrada")
-    private Integer entrada;
+	@Column(name = "entrada")
+	private Integer entrada;
 
-    @Column(name = "saida")
-    private Integer saida;
+	@Column(name = "saida")
+	private Integer saida;
 
-    @Column(insertable = false, updatable = false)
-    private Integer saldo;
+	@Column(insertable = false, updatable = false)
+	private Integer saldo;
 
-    @Column(name = "fornecedor")
-    private String fornecedor;
+	@Column(name = "fornecedor")
+	@NotNull(message = "O campo Fornecedor está vazio, selecione uma opção.")
+	private String fornecedor;
 
-    @Column(name = "preco_custo")
-    private BigDecimal precoCusto;
+	@Column(name = "preco_custo")
+	private BigDecimal precoCusto;
 
-    @Column(name = "preco_venda")
-    private BigDecimal precoVenda;
-    
-    @Column(name = "empresa")
-    private Empresa empresa;
+	@Column(name = "preco_venda")
+	private BigDecimal precoVenda;
+	
+	@Column(name = "empresa")
+	@NotNull(message = "Selecione uma empresa")
+	private Empresa empresa;
 
-    @Column(name = "data_cadastro")
-    private LocalDate dataCadastro;
+	@Column(name = "data_cadastro")
+	private LocalDate dataCadastro;
 
-    @Column(name = "ultima_atualizacao")
-    private LocalDateTime ultimaAtualizacao;
+	@Column(name = "ultima_atualizacao")
+	private LocalDateTime ultimaAtualizacao;
 
-    @Column(name = "ativo")
-    private Boolean ativo;
-    
-    @Column(name = "fabricante")
-    private Fabricante fabricante;
+	@Column(name = "ativo")
+	@NotNull(message = "O campo Status não pode ser vazio. ")
+	private Boolean ativo;
+
+	@Column(name = "fabricante")
+	@NotNull(message = "Selecione o Fabricante aqui. ")
+	private Fabricante fabricante;
 
 	public Integer getId() {
 		return id;
@@ -208,41 +220,39 @@ public class Produto {
 	public void setFabricante(Fabricante fabricante) {
 		this.fabricante = fabricante;
 	}
-    
+
 	// Adiciona quantidade de entrada e atualiza saldo
 	public void registrarEntrada(int quantidade) {
-	    if (quantidade <= 0) {
-	        throw new IllegalArgumentException("A quantidade de entrada deve ser positiva.");
-	    }
-	    if (this.entrada == null) {
-	        this.entrada = 0;
-	    }
-	    if (this.saldo == null) {
-	        this.saldo = 0;
-	    }
-	    this.entrada += quantidade;
-	    this.saldo += quantidade;
-	    this.ultimaAtualizacao = LocalDateTime.now();
+		if (quantidade <= 0) {
+			throw new IllegalArgumentException("A quantidade de entrada deve ser positiva.");
+		}
+		if (this.entrada == null) {
+			this.entrada = 0;
+		}
+		if (this.saldo == null) {
+			this.saldo = 0;
+		}
+		this.entrada += quantidade;
+		this.saldo += quantidade;
+		this.ultimaAtualizacao = LocalDateTime.now();
 	}
 
-	// Registra saída e atualiza saldo, com validação de saldo suficiente
 	public void registrarSaida(int quantidade) {
-	    if (quantidade <= 0) {
-	        throw new IllegalArgumentException("A quantidade de saída deve ser positiva.");
-	    }
-	    if (this.saldo == null) {
-	        this.saldo = 0;
-	    }
-	    if (quantidade > this.saldo) {
-	        throw new IllegalArgumentException("Estoque insuficiente para a saída solicitada.");
-	    }
-	    if (this.saida == null) {
-	        this.saida = 0;
-	    }
-	    this.saida += quantidade;
-	    this.saldo -= quantidade;
-	    this.ultimaAtualizacao = LocalDateTime.now();
+		if (quantidade <= 0) {
+			throw new IllegalArgumentException("A quantidade de saída deve ser positiva.");
+		}
+		if (this.saldo == null) {
+			this.saldo = 0;
+		}
+		if (quantidade > this.saldo) {
+			throw new IllegalArgumentException("Estoque insuficiente para a saída solicitada.");
+		}
+		if (this.saida == null) {
+			this.saida = 0;
+		}
+		this.saida += quantidade;
+		this.saldo -= quantidade;
+		this.ultimaAtualizacao = LocalDateTime.now();
 	}
 
-
-	}
+}

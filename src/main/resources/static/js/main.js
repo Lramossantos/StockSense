@@ -1,20 +1,54 @@
 $(document).ready(function() {
+    // Máscara monetária modificada para formato brasileiro
+    $('.money-input').mask('#.##0,00', { 
+        reverse: true,
+        translation: {
+            '0': { pattern: /\d/ },
+            ',': { pattern: /[,]/, optional: false },
+            '.': { pattern: /[.]/, optional: true }
+        },
+        onKeyPress: function(value, e, field, options) {
+            // Garante que sempre tenha 2 dígitos após a vírgula
+            if(value.indexOf(',') >= 0) {
+                var parts = value.split(',');
+                if(parts[1].length > 2) {
+                    field.val(parts[0] + ',' + parts[1].substring(0, 2));
+                }
+            }
+        }
+    });
+
     // Elementos do DOM
     const $fileInput = $('#imagemProduto');
     const $fileLabel = $fileInput.next('.custom-file-label');
     const $feedbackElement = $('#imagemFeedback');
-    
-    // Atualiza o label com o caminho do arquivo
+    const $precoCustoInput = $('#precoCusto');
+    const validExtensions = ['image/jpeg', 'image/png', 'image/gif', 'image/x-icon', 'image/vnd.microsoft.icon'];
+
+    // Formata o valor do preço de custo ao carregar a página
+    if($precoCustoInput.val()) {
+        let valor = parseFloat($precoCustoInput.val()).toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+        $precoCustoInput.val(valor);
+    }
+
+    // Atualiza o label com o nome do arquivo
     $fileInput.on('change', function(event) {
         const file = event.target.files[0];
         
         if (file) {
-            // Mostra o caminho completo do arquivo selecionado
-            const fullPath = $(this).val();
-            // Remove o prefixo 'C:\fakepath\' se existir
-            const displayPath = fullPath.replace(/^C:\\fakepath\\/i, '');
-            $fileLabel.addClass("selected").html(displayPath);
-            
+            // Mostra apenas o nome do arquivo (sem caminho)
+            $fileLabel.addClass("selected").html(file.name);
+
+            // Validação do tipo de arquivo
+            if (!validExtensions.includes(file.type) && !file.name.toLowerCase().endsWith('.ico')) {
+                showFeedback(false, 'Tipo de arquivo inválido. Use: JPG, PNG, GIF ou ICO');
+                resetFileInput();
+                return;
+            }
+
             // Valida a imagem
             validateImage(file, function(result) {
                 if (result.valid) {
@@ -28,18 +62,9 @@ $(document).ready(function() {
             resetFileInput();
         }
     });
-    
+
     // Função para validar a imagem
     function validateImage(file, callback) {
-        // Verifica se é uma imagem
-        if (!file.type.match('image.*')) {
-            callback({
-                valid: false,
-                message: 'O arquivo deve ser uma imagem'
-            });
-            return;
-        }
-        
         // Verifica tamanho do arquivo (máximo 5MB)
         if (file.size > 5 * 1024 * 1024) {
             callback({
@@ -48,11 +73,11 @@ $(document).ready(function() {
             });
             return;
         }
-        
+
         // Verifica dimensões
         const img = new Image();
         img.src = URL.createObjectURL(file);
-        
+
         img.onload = function() {
             const isValid = this.width >= 500 && this.height >= 500;
             callback({
@@ -63,7 +88,7 @@ $(document).ready(function() {
             });
             URL.revokeObjectURL(img.src);
         };
-        
+
         img.onerror = function() {
             callback({
                 valid: false,
@@ -71,61 +96,47 @@ $(document).ready(function() {
             });
         };
     }
-    
+
     // Mostra feedback visual
     function showFeedback(isValid, message) {
-        $feedbackElement.removeClass('d-none')
-                       .removeClass(isValid ? 'invalid-feedback' : 'valid-feedback')
-                       .addClass(isValid ? 'valid-feedback' : 'invalid-feedback')
-                       .html(message);
+        $feedbackElement
+            .removeClass(isValid ? 'invalid-feedback' : 'valid-feedback')
+            .addClass(isValid ? 'valid-feedback' : 'invalid-feedback')
+            .text(message)
+            .removeClass('d-none');
     }
-    
+
     // Reseta o input de arquivo
     function resetFileInput() {
         $fileInput.val('');
         $fileLabel.removeClass("selected").html('Selecione uma imagem...');
-        $feedbackElement.addClass('d-none').html('');
+        $feedbackElement.addClass('d-none').text('');
     }
-    
+
     // Validação do formulário antes do envio
     $('form').on('submit', function(e) {
+        // Validação da imagem
         if ($fileInput[0].files.length === 0) {
             showFeedback(false, '✖ Selecione uma imagem');
             e.preventDefault();
             return false;
         }
+        
+        // Formata o valor do preço de custo para o padrão americano antes de enviar
+        if($precoCustoInput.val()) {
+            let valorFormatado = $precoCustoInput.val()
+                .replace(/\./g, '')
+                .replace(',', '.');
+            $precoCustoInput.val(valorFormatado);
+        }
+        
         return true;
     });
-	
-	$(document).ready(function() {
-	    $('.btn-excluir').click(function(e) {
-	        if (!confirm('Tem certeza que deseja excluir este produto?')) {
-	            e.preventDefault();
-	        }
-	    });
-	});
-	
-	document.getElementById('imagemProduto').addEventListener('change', function(e) {
-	    const file = e.target.files[0];
-	    const label = document.getElementById('imagemLabel');
-	    const feedback = document.getElementById('imagemFeedback');
-	    
-	    if (file) {
-	        label.textContent = file.name;
-	        
-	        // Validação simples do tipo de arquivo
-	        const validExtensions = ['image/x-icon', 'image/vnd.microsoft.icon', 'image/*'];
-	        const fileType = file.type;
-	        
-	        if (!validExtensions.includes(fileType) && !file.name.endsWith('.ico')) {
-	            feedback.textContent = 'Por favor, selecione um arquivo .ico ou imagem válida';
-	            feedback.classList.remove('d-none');
-	            feedback.classList.add('text-danger');
-	            e.target.value = ''; // Limpa o input
-	            label.textContent = 'Selecione um ícone (.ico) ou imagem...';
-	        } else {
-	            feedback.classList.add('d-none');
-	        }
-	    }
-	});
+
+    // Confirmação para exclusão
+    $('.btn-excluir').click(function(e) {
+        if (!confirm('Tem certeza que deseja excluir este produto?')) {
+            e.preventDefault();
+        }
+    });
 });

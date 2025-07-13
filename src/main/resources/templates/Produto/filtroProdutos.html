@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Leonardo Ramos" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@400;600&display=swap" rel="stylesheet">
+    <title>Encontrar Alunos</title>
+</head>
+
+<body>
+    <div th:replace="fragmentos/fragmentos :: cabecalho"></div>
+    <section class="neo-section">
+        <div class="container">
+            <h4>Encontrar Produtos</h4>
+            <hr>
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card" style="width: 20rem; height: 18rem;">
+                        <img class="card-img-top" alt="Produtos Ativos" src="img/Produtos-Ativos.jpg">
+                        <div class="card-body">
+                            <h5 class="card-title">Produtos Ativos no Sistema</h5>
+                            <p class="card-text">Busque por todos os produtos que estão ativos no sistema.</p>
+                            <a href="#" class="btn btn-outline-primary">Clique Aqui!</a>
+                        </div>
+                    </div>
+                    
+              	<div class="card" style="width: 20rem; height: 18rem;">
+                        <img class="card-img-top" alt="Produtos Ativos" src="img/Produtos-Ativos.jpg">
+                        <div class="card-body">
+                            <h5 class="card-title">Produtos Inativos no Sistema</h5>
+                            <p class="card-text">Busque por todos os produtos que estão inativos no sistema.</p>
+                            <a href="#" class="btn btn-outline-primary">Clique Aqui!</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Você pode adicionar mais cards aqui -->
+            </div>
+        </div>
+    </section>
+</body>
+</html>

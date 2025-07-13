@@ -27,11 +27,19 @@
 
 			<div class="row">
 				<div class="col-md-6 form-group offset-md-3">
-					<label>Nome do Produto*</label> <input class="form-control"
-						placeholder="Ex: Coxim, Amortecedor, Câmbio..." th:field="*{nome}">
+				<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('nome')}">
+					<label class="validation-message" th:errors="*{nome}"></label>
 				</div>
+								
+				<label>Nome do Produto*</label> 
+				<input class="form-control"	placeholder="Ex: Coxim, Amortecedor, Câmbio..." th:field="*{nome}">
+			</div>
 
 				<div class="col-md-6 form-group offset-md-3">
+					<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('disponibilidade')}">
+						<label class="validation-message" th:errors="*{disponibilidade}"></label>
+					</div>
+					
     				<label>Disponibilidade*</label>
     				<select class="form-control" th:field="*{disponibilidade}" required>
         				<option value="" th:selected="${selectedValue == ''}">Selecionar*</option>
@@ -42,19 +50,24 @@
     				</select>
 				</div>				
 
-				<div class="col-md-6 form-group offset-md-3">
-    				<label>Ícone do Produto*</label>
-    				<div class="custom-file">
-        				<input type="file" class="custom-file-input" id="imagemProduto"
-              				 name="imagemProduto" accept=".ico,image/*" required>
-        				<label class="custom-file-label" for="imagemProduto" id="imagemLabel">
-           				 Selecione um ícone (.ico) ou imagem...
-        				</label>
-        				<div class="feedback-message d-none" id="imagemFeedback"></div>
-    				</div>
-    				<small class="form-text text-muted">
-        				Formatos aceitos: .ico ou imagens (serão convertidas para ícone 32x32px)
-    				</small>
+				<div class="col-md-6 form-group offset-md-3">							
+					<div th:if="${#fields.hasErrors('imagens')}" class="alert alert-danger">
+    					<span th:errors="*{imagens}"></span>
+					</div>
+									
+    				<div class="form-group">
+    					<label>Ícone do Produto*</label>
+    					<div class="custom-file">
+        					<input type="file" class="custom-file-input" id="imagemProduto" 
+               					name="imagemProduto" accept="image/*" required>
+        					<label class="custom-file-label" for="imagemProduto">
+            					Selecione uma imagem...
+        					</label>
+        					<small class="form-text text-muted">
+            					Formatos aceitos: JPG, PNG (máx. 5MB)
+        					</small>
+    					</div>
+					</div>
 				</div>				
 
 				<div class="col-md-6 form-group offset-md-4 mt-1">					
@@ -62,16 +75,24 @@
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">
+				<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('codigo')}">
+					<label class="validation-message" th:errors="*{codigo}"></label>
+				</div>
+
 				<label>Código do Produto*</label> 
 				<input class="form-control"	placeholder="Ex: 123456..." th:field="*{codigo}">
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3 ">
+				<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('descricao')}">
+					<label class="validation-message" th:errors="*{descricao}"></label>
+				</div>
+
 				<label>Descrição*</label> 
 				<input class="form-control"	 th:field="*{descricao}">
 			</div>
 
-			<div class="row mb-3 justify-content-center">
+			<div class="row mb-3 justify-content-center">				
 				<div class="col-md-3 form-group ms-md-3">
 					<label style="color: green;">Entrada*:</label> 
 					<input class="form-control"	placeholder="Ex: Digite a quantidade de entrada" th:field="*{entrada}">
@@ -94,14 +115,18 @@
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">
-			   <label>Valor de Custo*</label>
- 			   <div class="input-group">
- 			       <span class="input-group-text">R$</span> 
- 			       <input type="text" class="form-control money-input" 
- 			              placeholder="Ex: 100,00" th:field="*{precoCusto}"
- 			              id="precoCusto" name="precoCusto">
- 			   </div>
- 			   <small class="form-text text-muted">Digite o valor com vírgula como separador decimal</small>              
+    			<label>Valor de Custo*</label>
+    			<div class="input-group">
+        			<span class="input-group-text">R$</span> 
+        			<input type="text" 
+		               class="form-control money-input" 
+		               placeholder="Ex: 1.000,00" 
+		               th:field="*{precoCusto}"
+		               th:value="${#numbers.formatDecimal(produto.precoCusto, 2, 'DEFAULT', 2, 'POINT')}"
+		               id="precoCusto" 
+		               name="precoCusto">
+    			</div>
+    			<small class="form-text text-muted">Digite o valor com vírgula como separador decimal</small>              
 			</div>
 
 			<div class="col-md-6 form-group offset-md-3">
