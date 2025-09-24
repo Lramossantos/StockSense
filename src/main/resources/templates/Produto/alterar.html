@@ -2,157 +2,139 @@
 <html>
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="Leonardo Ramos" />
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link
-	href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@400;600&display=swap"
-	rel="stylesheet">
-<title>StockSense</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="Leonardo Ramos" />
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@400;600&display=swap"
+		rel="stylesheet">
+	<title>StockSense</title>
 </head>
 
 <body>
 	<div th:replace="fragmentos/fragmentos :: cabecalho"></div>
 	<section class="neo-section">
-	
-	<div class="container">
-		<h4>+ Alterar Produto</h4>
-		<hr>
 
-		<form method="post" action="/alterar" th:object="${produto}" enctype="multipart/form-data">
-			<input type="hidden" th:field="*{id}" />					
-		
-			<div class="row">
-				<div class="col-md-6 form-group offset-md-3">
-					<label>Nome do Produto*</label> <input class="form-control"
-						placeholder="Ex: Coxim, Amortecedor, Câmbio..." th:field="*{nome}">
+		<div class="container">
+			<h4>+ Alterar Produto</h4>
+			<hr>
+
+			<form method="post" action="/alterar" th:object="${produto}" enctype="multipart/form-data">
+				<input type="hidden" th:field="*{id}" />
+
+				<div class="row">
+					<div class="col-md-6 form-group offset-md-3">
+						<label for="nomeProduto">Nome do Produto*</label>
+						<input id="nomeProduto" class="form-control"
+							placeholder="Ex: Coxim, Amortecedor, Câmbio..." th:field="*{nome}" required>
+					</div>
+
+					<div class="col-md-6 form-group offset-md-3">
+						<label>Disponibilidade*</label>
+						<select class="form-control" th:field="*{disponibilidade}" required>
+							<option value="" th:selected="${selectedValue == ''}">Selecionar*</option>
+							<option th:each="disponibilidade : ${T(br.com.stocksense.enums.Disponibilidade).values()}"
+								th:value="${disponibilidade}" th:text="${disponibilidade}">
+							</option>
+						</select>
+					</div>
+
+					<div class="col-md-6 form-group offset-md-4 mt-1">
+					</div>
 				</div>
 
 				<div class="col-md-6 form-group offset-md-3">
-    				<label>Disponibilidade*</label>
-    				<select class="form-control" th:field="*{disponibilidade}" required>
-        				<option value="" th:selected="${selectedValue == ''}">Selecionar*</option>
-        				<option th:each="disponibilidade : ${T(br.com.stocksense.enums.Disponibilidade).values()}"
-                				th:value="${disponibilidade}"
-                				th:text="${disponibilidade}">
-        				</option>
-    				</select>
-				</div>				
+					<label>Código do Produto*</label>
+					<input class="form-control" placeholder="Ex: 123456..." th:field="*{codigo}">
+				</div>
+
+				<div class="col-md-6 form-group offset-md-3 ">
+					<label>Descrição*</label>
+					<input class="form-control" th:field="*{descricao}">
+				</div>
+
+				<div class="row mb-3 justify-content-center">
+					<div class="col-md-3 form-group ms-md-3">
+						<label style="color: green;">Entrada*:</label>
+						<input class="form-control" placeholder="Ex: Digite a quantidade de entrada"
+							th:field="*{entrada}">
+					</div>
+					<div class="col-md-3 form-group ">
+						<label style="color: red;">Saída*</label>
+						<input class="form-control" placeholder="Ex: Digite o número de saídas" th:field="*{saida}">
+					</div>
+				</div>
 
 				<div class="col-md-6 form-group offset-md-3">
-			  		<label>URL da Imagem*</label>
-			   		<div class="custom-file">
- 				       <input type="file" class="custom-file-input" id="imagemProduto"
- 				              name="imagemProduto" accept="image/*" required>
- 				       <label class="custom-file-label" for="imagemProduto" id="imagemLabel">
- 				           Selecione uma imagem...
-				        </label>
-				        <div class="feedback-message d-none" id="imagemFeedback"></div>
-				    </div>
-				    <small class="form-text text-muted">
-				        Tamanho mínimo recomendado: 1200x1200px (mínimo permitido: 500x500px).
-				    </small>
+					<label>Fornecedor*</label>
+					<select class="form-control" th:field="*{fornecedor}" size="1"
+						th:with="selectedValue=${produto.fornecedor != null} ? produto.fornecedor : ''">
+						<option value="" th:selected="${selectedValue == ''}">Selecionar*</option>
+						<option th:each="fornecedor : ${T(br.com.stocksense.enums.Fornecedor).values()}"
+							th:value="${fornecedor.name()}" th:text="${fornecedor.name()}">
+						</option>
+					</select>
 				</div>
 
-				<div class="col-md-6 form-group offset-md-4 mt-1">					
+				<div class="col-md-6 form-group offset-md-3">
+					<label>Valor de Custo*</label>
+					<div class="input-group">
+						<span class="input-group-text">R$</span>
+						<input type="text" class="form-control money-input" placeholder="Ex: 100,00"
+							th:field="*{precoCusto}" id="precoCusto" name="precoCusto">
+					</div>
+					<small class="form-text text-muted">Digite o valor com vírgula como separador decimal</small>
 				</div>
-			</div>
 
-			<div class="col-md-6 form-group offset-md-3">
-				<label>Código do Produto*</label> 
-				<input class="form-control"	placeholder="Ex: 123456..." th:field="*{codigo}">
-			</div>
-
-			<div class="col-md-6 form-group offset-md-3 ">
-				<label>Descrição*</label> 
-				<input class="form-control"	 th:field="*{descricao}">
-			</div>
-
-			<div class="row mb-3 justify-content-center">
-				<div class="col-md-3 form-group ms-md-3">
-					<label style="color: green;">Entrada*:</label> 
-					<input class="form-control"	placeholder="Ex: Digite a quantidade de entrada" th:field="*{entrada}">
+				<div class="col-md-6 form-group offset-md-3">
+					<label>Valor de Venda*</label>
+					<div class="input-group">
+						<span class="input-group-text">R$</span>
+						<input type="text" class="form-control money-input" placeholder="Ex: 150,00"
+							th:field="*{precoVenda}" id="precoVenda" name="precoVenda">
+					</div>
+					<small class="form-text text-muted">Digite o valor com vírgula como separador decimal</small>
 				</div>
-				<div class="col-md-3 form-group ">
-					<label style="color: red;">Saída*</label> 
-					<input class="form-control" placeholder="Ex: Digite o número de saídas"	th:field="*{saida}">
+
+				<div class="col-md-6 form-group offset-md-3">
+					<label>Pessoa Jurídica*</label>
+					<select class="form-control" th:field="*{empresa}" size="1"
+						th:with="selectedValue=${produto.empresa != null} ? produto.empresa : ''">
+						<option value="" th:selected="${selectedValue == ''}">Selecionar*</option>
+						<option th:each="empresa : ${T(br.com.stocksense.enums.Empresa).values()}"
+							th:value="${empresa.name()}" th:text="${empresa.name()}">
+						</option>
+					</select>
 				</div>
-			</div>
 
-			<div class="col-md-6 form-group offset-md-3">
-				<label>Fornecedor*</label>    			
-    			<select class="form-control" th:field="*{fornecedor}" size="1" th:with="selectedValue=${produto.fornecedor != null} ? produto.fornecedor : ''">
-    				<option value="" th:selected="${selectedValue == ''}">Selecionar*</option>    
-        			<option th:each="fornecedor : ${T(br.com.stocksense.enums.Fornecedor).values()}"
-        					th:value="${fornecedor.name()}"
-        					th:text="${fornecedor.name()}">
-					</option>
-    			</select>
-			</div>
+				<div class="col-md-6 form-group offset-md-3">
+					<label>Fabricante*</label>
+					<select class="form-control" th:field="*{fabricante}" size="1"
+						th:with="selectedValue=${produto.fabricante != null} ? produto.fabricante : ''">
+						<option value="" th:selected="${selectedValue == ''}">Selecionar*</option>
+						<option th:each="fabricante : ${T(br.com.stocksense.enums.Fabricante).values()}"
+							th:value="${fabricante}" th:text="${fabricante}">
+						</option>
+					</select>
+				</div>
 
-			<div class="col-md-6 form-group offset-md-3">
-			   <label>Valor de Custo*</label>
- 			   <div class="input-group">
- 			       <span class="input-group-text">R$</span> 
- 			       <input type="text" class="form-control money-input" 
- 			              placeholder="Ex: 100,00" th:field="*{precoCusto}"
- 			              id="precoCusto" name="precoCusto">
- 			   </div>
- 			   <small class="form-text text-muted">Digite o valor com vírgula como separador decimal</small>              
-			</div>
 
-			<div class="col-md-6 form-group offset-md-3">
-   			 <label>Valor de Venda*</label>
-    			<div class="input-group">
-    			    <span class="input-group-text">R$</span> 
-    			    <input type="text" class="form-control money-input" 
-    			           placeholder="Ex: 150,00" th:field="*{precoVenda}"
-    			           id="precoVenda" name="precoVenda">
-    			</div>
-    			<small class="form-text text-muted">Digite o valor com vírgula como separador decimal</small>
-			</div>
+				<div class="col-md-6 form-group offset-md-3">
+					<label>Status*</label>
+					<select class="form-control" th:field="*{ativo}">
+						<option th:value="true">Ativo</option>
+						<option th:value="false">Inativo</option>
+					</select>
+				</div>
 
-			<div class="col-md-6 form-group offset-md-3">
-    			<label>Pessoa Jurídica*</label>    			
-    			<select class="form-control" th:field="*{empresa}" size="1" th:with="selectedValue=${produto.empresa != null} ? produto.empresa : ''">
-    				<option value="" th:selected="${selectedValue == ''}">Selecionar*</option>    
-        			<option th:each="empresa : ${T(br.com.stocksense.enums.Empresa).values()}"
-        					th:value="${empresa.name()}"
-        					th:text="${empresa.name()}">
-					</option>
-    			</select>
-			</div>
-			
-			<div class="col-md-6 form-group offset-md-3">
-				<label>Fabricante*</label>   				
-   				<select class="form-control" th:field="*{fabricante}" size="1" th:with="selectedValue=${produto.fabricante != null} ? produto.fabricante : ''">
-    				<option value="" th:selected="${selectedValue == ''}">Selecionar*</option>    
-    				<option th:each="fabricante : ${T(br.com.stocksense.enums.Fabricante).values()}"
-                			th:value="${fabricante}"
-                			th:text="${fabricante}">
-                    </option>			
-				</select>
-			</div>		
-					
-			
-			<div class="col-md-6 form-group offset-md-3">
-				<label>Status*</label> 
-				<select class="form-control" th:field="*{ativo}">
-					<option th:value="true">Ativo</option>
-					<option th:value="false">Inativo</option>
-				</select>
-			</div>
-			
-			<div class="row">
-				<button type="submit" class="btn btn-succes col-md-2 offset-md-4">SALVAR</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a class="btn btn-outline-danger col-md-2">VOLTAR</a>
-			</div>
-		</div>	
+				<div class="row">
+					<button type="submit" class="btn btn-succes col-md-2 offset-md-4">SALVAR</button>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a class="btn btn-outline-danger col-md-2" href="/produtos-adicionados">VOLTAR</a>
+				</div>
+		</div>
 	</section>
 
 

@@ -1,12 +1,19 @@
 @charset "UTF-8";
 
+
 :root {
 	--cor-primaria: #212326;
 	--cor-secundaria: #373C40;
-	--cor-hover: #888C89;
-	--cor-texto: #272727;
-	--borda-radius: 15px;
-	--sombra: 0px 0px 5px #373C40;
+	--cor-hover: #4f8cff;
+	--cor-texto: #222;
+	--borda-radius: 16px;
+	--sombra: 0 4px 24px 0 rgba(33,35,38,0.10);
+	--cor-fundo-form: #f8f9fa;
+	--cor-input: #fff;
+	--cor-borda-input: #d1d5db;
+	--cor-label: #212326;
+	--cor-btn-success: #4f8cff;
+	--cor-btn-danger: #e74c3c;
 }
 
 * {
@@ -39,21 +46,24 @@ a {
 
 body {
 	margin: 0;
-	height: 100vh;
+	min-height: 100vh;
 	background-size: cover;
 	background-position: center;
+	font-family: 'Open Sans', 'Ubuntu', Arial, sans-serif;
+	color: var(--cor-texto);
+	background-color: #f4f6fb;
 	transition: background-image 1s ease-in-out;
 }
 
+
 .neo-section {
-	min-height: 1000px;
+	min-height: 900px;
 	background-size: cover !important;
 	background-position: center;
 	background-repeat: no-repeat;
 	width: 100%;
-	padding: 30px;
+	padding: 40px 0;
 	position: relative;
-	width: 100%;
 }
 
 .neo-section>.neo-container {
@@ -62,19 +72,23 @@ body {
 }
 
 .neo-container {
-	max-width: 1280px;
-	padding: 2% 2%;
+	max-width: 700px;
+	padding: 2.5rem 2rem;
 	margin: 0 auto;
-	background-color: white;
-	border-radius: 15px;
-	margin-top: 30px
+	background-color: var(--cor-fundo-form);
+	border-radius: var(--borda-radius);
+	margin-top: 40px;
+	box-shadow: var(--sombra);
 }
 
+
 .texto-centro {
-	color: white;
-	font-size: 3em;
-	font-family: 'Ubuntu';
-	margin-top: 50px;
+	color: var(--cor-primaria);
+	font-size: 2.5em;
+	font-family: 'Ubuntu', sans-serif;
+	margin-top: 30px;
+	font-weight: 700;
+	letter-spacing: 1px;
 }
 
 .center {
@@ -102,26 +116,26 @@ body {
 	font-family: "Ubuntu";
 }
 
+
 .btn {
-	transition: all 0.3s ease;
-	font-weight: bold !important;
-	width: 280px !important;
+	transition: all 0.2s;
+	font-weight: 600;
+	min-width: 180px;
 	color: #fff !important;
-	background-color: #212326 !important;
-	border-radius: 10px !important;
-	border: 3px solid #212326 !important;
-	padding: 15px !important;
-	box-shadow: 0px 0px 5px #373C40;
+	background: var(--cor-btn-success) !important;
+	border-radius: 8px !important;
+	border: none !important;
+	padding: 12px 0 !important;
+	box-shadow: 0 2px 8px 0 rgba(33,35,38,0.08);
+	font-size: 1.1em;
+	letter-spacing: 0.5px;
 }
 
-.btn:hover {
-	font-weight: bold;
-	width: 280px !important;
+.btn:hover, .btn:focus {
+	background: var(--cor-hover) !important;
 	color: #fff !important;
-	background-color: #888C89 !important;
-	border-radius: 10px !important;
-	border: 3px solid #888C89 !important;
-	padding: 15px !important;
+	transform: translateY(-2px) scale(1.03);
+	box-shadow: 0 4px 16px 0 rgba(33,35,38,0.13);
 }
 
 .botoes {
@@ -156,14 +170,109 @@ body {
 	}
 }
 
+
 .container {
-	padding: 25px 0px;
-	border-radius: 15px;
-	background-color: white;
-	margin-top: 50px;
-	margin-bottom: 100px;
-	margin-right: 300px;
-	background-color: white;
+	padding: 32px 18px;
+	border-radius: var(--borda-radius);
+	background-color: var(--cor-fundo-form);
+	margin-top: 30px;
+	margin-bottom: 60px;
+	box-shadow: var(--sombra);
+}
+/* Modernização dos campos de formulário */
+form .form-group {
+	margin-bottom: 1.5rem;
+}
+
+form label {
+	color: var(--cor-label);
+	font-weight: 600;
+	margin-bottom: 0.4rem;
+	letter-spacing: 0.2px;
+}
+
+form input.form-control,
+form select.form-control {
+	height: auto;
+	background: var(--cor-input);
+	border: 1.5px solid var(--cor-borda-input);
+	border-radius: 8px;
+	padding: 10px 14px;
+	font-size: 1em;
+	margin-bottom: 0.2rem;
+	transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+form input.form-control:focus,
+form select.form-control:focus {
+	border-color: var(--cor-btn-success);
+	outline: none;
+	box-shadow: 0 0 0 2px #4f8cff33;
+}
+
+form .input-group-text {
+	background: #e9ecef;
+	border-radius: 8px 0 0 8px;
+	border: 1.5px solid var(--cor-borda-input);
+	font-weight: 600;
+}
+
+form .form-text {
+	color: #888;
+	font-size: 0.95em;
+}
+
+/* Botões modernizados */
+.btn-success {
+	background: var(--cor-btn-success) !important;
+	border: none !important;
+}
+.btn-success:hover {
+	background: var(--cor-hover) !important;
+}
+.btn-outline-danger {
+	color: var(--cor-btn-danger) !important;
+	border: 2px solid var(--cor-btn-danger) !important;
+	background: transparent !important;
+	font-weight: 600;
+}
+.btn-outline-danger:hover {
+	background: var(--cor-btn-danger) !important;
+	color: #fff !important;
+}
+
+/* Feedback visual para campos inválidos */
+input:invalid, select:invalid {
+	border-color: #e74c3c;
+	background: #fff0f0;
+}
+
+input:valid, select:valid {
+	border-color: #4f8cff;
+}
+
+/* Responsividade aprimorada */
+@media (max-width: 900px) {
+	.neo-container, .container {
+		max-width: 98vw;
+		padding: 1.2rem 0.5rem;
+	}
+	.texto-centro {
+		font-size: 2em;
+	}
+}
+
+@media (max-width: 600px) {
+	.neo-container, .container {
+		margin-top: 10px;
+		margin-bottom: 20px;
+		padding: 0.7rem 0.2rem;
+	}
+	.btn, .btn-success, .btn-outline-danger {
+		min-width: 120px;
+		font-size: 1em;
+		padding: 10px 0 !important;
+	}
 }
 
 .btn-salvar-produto {
