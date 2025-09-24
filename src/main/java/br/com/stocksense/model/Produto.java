@@ -3,6 +3,7 @@ package br.com.stocksense.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import br.com.stocksense.enums.Disponibilidade;
 import br.com.stocksense.enums.Empresa;
 import br.com.stocksense.enums.Fabricante;
@@ -37,9 +38,6 @@ public class Produto {
 	@NotNull(message = "Selecione uma disponibilidade")
 	private Disponibilidade disponibilidade;
 
-	@Column(name = "imagens")	
-	private String imagens;
-
 	@Column(name = "codigo")
 	@NotNull(message = "O campo Código não pode ser vazio.")
 	private String codigo;
@@ -66,7 +64,10 @@ public class Produto {
 
 	@Column(name = "preco_venda")
 	private BigDecimal precoVenda;
-	
+
+	@Column(name = "lucro_venda")
+	private BigDecimal LucroVenda;
+
 	@Column(name = "empresa")
 	@NotNull(message = "Selecione uma empresa")
 	private Empresa empresa;
@@ -107,14 +108,6 @@ public class Produto {
 
 	public void setDisponibilidade(Disponibilidade disponibilidade) {
 		this.disponibilidade = disponibilidade;
-	}
-
-	public String getImagens() {
-		return imagens;
-	}
-
-	public void setImagens(String imagens) {
-		this.imagens = imagens;
 	}
 
 	public String getCodigo() {
@@ -179,6 +172,14 @@ public class Produto {
 
 	public void setPrecoVenda(BigDecimal precoVenda) {
 		this.precoVenda = precoVenda;
+	}
+
+	public BigDecimal getLucroVenda() {
+		return LucroVenda;
+	}
+
+	public void setLucroVenda(BigDecimal lucroVenda) {
+		LucroVenda = lucroVenda;
 	}
 
 	public Empresa getEmpresa() {

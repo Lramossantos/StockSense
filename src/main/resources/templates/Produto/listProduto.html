@@ -23,8 +23,7 @@
 			<thead>
 			<tr>
 					<th scope="col">Id</th>
-					<th scope="col">Nome</th>
-					<th scope="col">Imagem</th>
+					<th scope="col">Nome</th>					
 					<th scope="col">Disponibilidade</th>
 					<th scope="col">Código</th>
 					<th scope="col">Descrição</th>
@@ -44,14 +43,10 @@
 			<tbody>
 				<tr scope="row" th:each="produto : ${produtosList}">
 					<td th:text="${produto.id}"></td>
-					<td th:text="${produto.nome}"></td>
-					<td>
-    					<img th:if="${produto.imagens}" th:src="@{${produto.imagens}}" style="max-width: 100px; max-height: 100px;" alt="Imagem do produto">
-    					<span th:unless="${produto.imagens}">Sem imagem</span>
-					</td>
+					<td th:text="${produto.nome}"></td>					
 					<td th:text="${produto.disponibilidade}"></td>
 					<td th:text="${produto.codigo}"></td>
-					<td th:text="${produto.descricao}" id="prodDesc"></td>
+					<td th:text="${produto.descricao}"></td>
 					<td th:text="${produto.entrada}"></td>
 					<td th:text="${produto.saida}"></td>
 					<td>
